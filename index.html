@@ -16,14 +16,14 @@
         #section-1-input button[type="submit"] { margin-left: 175px; }
         #section-2-welcome button, #section-3-message #next-step-button { margin-left: 165px; }
         
-        /* Stili per i pulsanti di caricamento nel menu finale */
+        /* Stili per i pulsanti del menu finale */
         .menu-item { display: flex; align-items: center; margin-bottom: 10px; }
         .menu-item .prompt-content { display: flex; align-items: center; }
         .menu-item button { 
             margin-top: 0; 
             background-color: #ff00ff; 
             color: #000; 
-            min-width: 250px; /* Pulsanti più larghi */
+            min-width: 250px;
         }
         
         button:hover { background-color: #ffffff; }
@@ -208,10 +208,10 @@
             const totalNarrativeSteps = 16; 
 
             // #################################################
-            // ### CONFIGURAZIONE CARICAMENTO FOTO AUTOMATICO (RELATIVE PATHS) ###
+            // ### CONFIGURAZIONE CARICAMENTO FOTO (MINUSCOLO) ###
             // #################################################
-            // I nomi dei file DEVONO corrispondere ESATTAMENTE ai file caricati su GitHub
-            
+            // LISTA BASATA SU NOME FILE: foto01.png, foto02.png, ...
+
             const fotoList = [
                 { file: 'foto01.png' }, { file: 'foto02.png' }, { file: 'foto03.png' }, 
                 { file: 'foto04.png' }, { file: 'foto05.png' }, { file: 'foto06.png' }, 
@@ -268,7 +268,6 @@
 
                 let html = '';
                 list.forEach((item, index) => {
-                    // La sorgente è il nome del file, che GitHub Pages risolverà automaticamente
                     const imageUrl = item.file; 
                     
                     html += `
