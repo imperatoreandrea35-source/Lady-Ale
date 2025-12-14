@@ -34,8 +34,7 @@
   const REPO   = "Lady-Ale";
   const BRANCH = "main";
 
-  // Cartelle REALI dentro il repo (come le hai descritte)
-  // Attenzione: "Lady Ale" contiene SPAZIO, va bene.
+  // ===== CARTELLE IMMAGINI NEL REPO =====
   const ALBUMS = {
     foto:    "Lady Ale/foto",
     ricordi: "Lady Ale/ricordi",
@@ -57,17 +56,16 @@
   function isImage(name) {
     const dot = name.lastIndexOf(".");
     if (dot < 0) return false;
-    const ext = name.slice(dot+1).toLowerCase();
+    const ext = name.slice(dot + 1).toLowerCase();
     return ALLOWED_EXT.includes(ext);
   }
 
   async function main() {
-    // Validazione album
     if (!ALBUMS[albumKey]) {
       titleEl.textContent = "C:\\GALLERY\\ERROR>";
       metaEl.textContent =
-        "Parametro mancante o errato.\n" +
-        "Usa:\n" +
+        "Parametro mancante o errato.\n\n" +
+        "Apri una di queste:\n" +
         "  gallery/index.html?album=foto\n" +
         "  gallery/index.html?album=ricordi\n" +
         "  gallery/index.html?album=risate\n" +
@@ -79,7 +77,6 @@
     const folder = ALBUMS[albumKey];
     titleEl.textContent = `C:\\GALLERY\\${albumKey.toUpperCase()}>`;
 
-    // Costruzione URL API (path con spazi encodati correttamente)
     const encodedPath = encodeURIComponent(folder).replace(/%2F/g, "/");
     const apiUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${encodedPath}?ref=${encodeURIComponent(BRANCH)}`;
 
@@ -104,13 +101,13 @@
 
       const images = data
         .filter(x => x.type === "file" && isImage(x.name))
-        .sort((a,b) => a.name.localeCompare(b.name, undefined, { numeric:true, sensitivity:"base" }));
+        .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric:true, sensitivity:"base" }));
 
       if (images.length === 0) {
         statusEl.textContent = "";
         errorEl.textContent =
           `Nessuna immagine trovata in "${folder}".\n` +
-          `Controlla che i file siano davvero dentro quella cartella e che abbiano estensioni immagine (png/jpg/webp/avif...).`;
+          `Verifica che i file siano davvero in quella cartella e con estensioni immagini (png/jpg/webp/avif...).`;
         return;
       }
 
@@ -121,14 +118,16 @@
         card.className = "card";
 
         const img = document.createElement("img");
-        img.src = f.download_url; // RAW diretto (non dipende dai path di Pages)
-        img.alt = `${albumKey} ${i+1}`;
+        img.src = f.download_url;
+        img.alt = `${albumKey} ${i + 1}`;
 
         const label = document.createElement("div");
         label.className = "label";
-        label.textContent = `${i+1}. ${f.name}`;
+        label.textContent = `${i + 1}. ${f.name}`;
 
-        img.onerror = () => { label.textContent = `ERRORE CARICAMENTO: ${f.name}`; };
+        img.onerror = () => {
+          label.textContent = `ERRORE CARICAMENTO: ${f.name}`;
+        };
 
         card.appendChild(img);
         card.appendChild(label);
