@@ -1,90 +1,32 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!DOCTYPE html><html lang="it"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Galleria - RICORDI</title>
 <style>
-  body { background:#000; color:#00ff00; font-family:'Courier New', monospace; margin:0; padding:20px; }
-  .top { max-width: 1100px; margin: 0 auto; }
-  h1 { color:#ff00ff; font-size: 20px; margin:0 0 10px 0; }
-  a { color: yellow; text-decoration: none; }
-  .muted { color:#7CFF7C; font-size: 13px; margin: 0 0 14px 0; }
-  .gallery { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:14px; margin-top: 16px; }
-  .card { border:2px solid #00ff00; padding:8px; }
-  img { width:100%; height:auto; display:block; border:2px solid #00ff00; background:#000; }
-  .label { margin-top: 8px; font-size: 13px; word-break: break-all; }
-</style>
-</head>
+body{background:#000;color:#00ff00;font-family:'Courier New',monospace;padding:20px}
+h1{color:#ff00ff}a{color:yellow;text-decoration:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.card{border:2px solid #00ff00;padding:8px}
+img{width:100%;border:2px solid #00ff00}
+</style></head>
 <body>
-<div class="top">
-  <h1>C:\GALLERY\RICORDI></h1>
-  <p class="muted" id="srcInfo"></p>
-  <p><a href="../index.html">← Torna al terminale</a></p>
-  <div id="gallery" class="gallery"></div>
-</div>
+<h1>C:\GALLERY\RICORDI></h1>
+<p><a href="../index.html">← Torna al terminale</a></p>
+<div id="grid" class="grid"></div>
 
 <script>
-  // Base della repo: /Lady-Ale
-  const REPO_BASE = "/" + window.location.pathname.split("/")[1];
+loadGallery("Lady Ale/ricordi");
 
-  // Cartella immagini (con spazio -> %20)
-  const BASE_DIR = `${REPO_BASE}/Lady%20Ale/ricordi/`;
-
-  // Prova varie estensioni (se usi TinyPNG potresti avere webp/avif)
-  const EXTENSIONS = ["png", "jpg", "jpeg", "webp", "avif"];
-
-  // Qui definiamo SOLO lo "stem" (senza estensione)
-  const stems = [
-    "ricordo01","ricordo02","ricordo03","ricordo04","ricordo05","ricordo06",
-    "ricordo07","ricordo08","ricordo09","ricordo10","ricordo11","ricordo12",
-    "ricordo13"
-  ];
-
-  document.getElementById("srcInfo").textContent =
-    `Sorgente: ${BASE_DIR} (estensioni provate: ${EXTENSIONS.join(", ")})`;
-
-  function setWithExtensionFallback(img, stem, extIndex = 0) {
-    if (extIndex >= EXTENSIONS.length) {
-      img.remove();
-      return null;
-    }
-    const filename = `${stem}.${EXTENSIONS[extIndex]}`;
-    img.src = BASE_DIR + filename;
-    img.dataset.currentTried = filename;
-
-    img.onerror = () => setWithExtensionFallback(img, stem, extIndex + 1);
-    return filename;
-  }
-
-  const root = document.getElementById("gallery");
-
-  stems.forEach((stem, i) => {
-    const card = document.createElement("div");
-    card.className = "card";
-
-    const img = document.createElement("img");
-    const firstTry = setWithExtensionFallback(img, stem, 0);
-
-    const label = document.createElement("div");
-    label.className = "label";
-    label.textContent = `RICORDO ${i+1} — tentativo: ${BASE_DIR}${firstTry}`;
-
-    img.onload = () => {
-      label.textContent = `RICORDO ${i+1} — ${BASE_DIR}${img.dataset.currentTried}`;
-    };
-
-    // Se falliscono tutte le estensioni, mostriamo il path base per debug
-    img.addEventListener("error", () => {
-      // non fare nulla qui: il fallback gestisce gli errori
-      // quando falliscono tutte le estensioni, img viene rimosso e resta solo label
-      // per chiarezza lasciamo il label col primo tentativo
-    });
-
-    card.appendChild(img);
-    card.appendChild(label);
-    root.appendChild(card);
-  });
-</script>
-</body>
-</html>
+function loadGallery(folder){
+fetch(`https://api.github.com/repos/imperatoreandrea35-source/Lady-Ale/contents/${encodeURIComponent(folder).replace(/%2F/g,"/")}`)
+.then(r=>r.json())
+.then(files=>{
+files.filter(f=>f.type==="file" && /\.(png|jpg|jpeg|webp|avif|gif)$/i.test(f.name))
+.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}))
+.forEach((f,i)=>{
+const c=document.createElement("div");c.className="card";
+c.innerHTML=`<img src="${f.download_url}"><div>RICORDO ${i+1} — ${f.name}</div>`;
+grid.appendChild(c);
+});
+});
+}
+</script></body></html>
