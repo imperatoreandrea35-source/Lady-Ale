@@ -1,343 +1,353 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLI Interface - L'Epopea di Lady Ale (Online Finale)</title>
-    <style>
-        body {
-            background-color: #000000;
-            color: #00ff00;
-            font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 20px;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
-        #terminal-container {
-            width: 100%;
-            max-width: 600px;
-            overflow-y: auto;
-            max-height: 95vh;
-            padding-bottom: 20px;
-        }
-        .prompt-line { display: flex; margin-bottom: 5px; }
-        .prompt {
-            color: #ff00ff;
-            min-width: 150px;
-            margin-right: 10px;
-            text-align: right;
-        }
-        .prompt-content { flex-grow: 1; }
-        input[type="text"], input[type="date"] {
-            background-color: transparent;
-            border: none;
-            border-bottom: 1px solid #00ff00;
-            color: #00ff00;
-            font-family: inherit;
-            font-size: 1em;
-            padding: 2px 0;
-            outline: none;
-            width: 300px;
-            margin-left: 10px;
-        }
-        button {
-            background-color: #00ff00;
-            color: #000000;
-            border: none;
-            padding: 5px 10px;
-            font-family: inherit;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        #section-1-input button[type="submit"] { margin-left: 175px; }
-        #section-2-welcome button, #section-3-message #next-step-button { margin-left: 165px; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLI Interface - L'Epopea di Lady Ale (Online Finale)</title>
+  <style>
+    body {
+      background-color: #000000;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    #terminal-container {
+      width: 100%;
+      max-width: 600px;
+      overflow-y: auto;
+      max-height: 95vh;
+      padding-bottom: 20px;
+    }
+    .prompt-line { display: flex; margin-bottom: 5px; }
+    .prompt { color: #ff00ff; min-width: 150px; margin-right: 10px; text-align: right; }
+    .prompt-content { flex-grow: 1; }
 
-        .menu-item { display: flex; align-items: center; margin-bottom: 10px; }
-        .menu-item .prompt-content { display: flex; align-items: center; }
-        .menu-item button {
-            margin-top: 0;
-            background-color: #ff00ff;
-            color: #000;
-            min-width: 250px;
-        }
+    input[type="text"], input[type="date"] {
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid #00ff00;
+      color: #00ff00;
+      font-family: inherit;
+      font-size: 1em;
+      padding: 2px 0;
+      outline: none;
+      width: 300px;
+      margin-left: 10px;
+    }
 
-        button:hover { background-color: #ffffff; }
-        .hidden { display: none; }
-        .highlight { color: yellow; font-weight: bold; }
-        .blinking-cursor::after { content: '_'; animation: blink 1s step-start infinite; }
-        @keyframes blink { 50% { visibility: hidden; } }
-        .chapter-title { color: #ff00ff; font-weight: bold; text-decoration: underline; }
-        .narrative-step { margin-bottom: 10px; }
-    </style>
+    button {
+      background-color: #00ff00;
+      color: #000000;
+      border: none;
+      padding: 5px 10px;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    #section-1-input button[type="submit"] { margin-left: 175px; }
+    #section-2-welcome button, #section-3-message #next-step-button { margin-left: 165px; }
+
+    .menu-item { display: flex; align-items: center; margin-bottom: 10px; }
+    .menu-item .prompt-content { display: flex; align-items: center; }
+    .menu-item button {
+      margin-top: 0;
+      background-color: #ff00ff;
+      color: #000;
+      min-width: 250px;
+    }
+
+    button:hover { background-color: #ffffff; }
+    .hidden { display: none; }
+    .highlight { color: yellow; font-weight: bold; }
+    .blinking-cursor::after { content: '_'; animation: blink 1s step-start infinite; }
+    @keyframes blink { 50% { visibility: hidden; } }
+    .chapter-title { color: #ff00ff; font-weight: bold; text-decoration: underline; }
+    .narrative-step { margin-bottom: 10px; }
+  </style>
 </head>
-<body>
 
+<body>
 <div id="terminal-container">
 
-    <!-- SECTION 1 -->
-    <div id="section-1-input" class="terminal-output">
-        <div>
-            <p>Sistema operativo [Versione 1.0.0]</p>
-            <p>(c) 2025 CLI Project. Tutti i diritti riservati.</p>
-            <br>
-            <p>Inizializzazione del modulo dati...</p>
-            <p>Per favore, inserisci le informazioni richieste per procedere:</p>
-        </div>
-        <form id="user-form">
-            <div class="prompt-line">
-                <span class="prompt">C:\USER\CLI_SETUP></span>
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
-            </div>
-            <div class="prompt-line">
-                <span class="prompt">C:\USER\CLI_SETUP></span>
-                <label for="cognome">Cognome:</label>
-                <input type="text" id="cognome" name="cognome" required>
-            </div>
-            <div class="prompt-line">
-                <span class="prompt">C:\USER\CLI_SETUP></span>
-                <label for="nascita">Data di Nascita:</label>
-                <input type="date" id="nascita" name="nascita" required>
-            </div>
-            <button type="submit">Invio Dati (ENTER)</button>
-        </form>
+  <!-- SECTION 1 -->
+  <div id="section-1-input" class="terminal-output">
+    <div>
+      <p>Sistema operativo [Versione 1.0.0]</p>
+      <p>(c) 2025 CLI Project. Tutti i diritti riservati.</p>
+      <br>
+      <p>Inizializzazione del modulo dati...</p>
+      <p>Per favore, inserisci le informazioni richieste per procedere:</p>
     </div>
 
-    <!-- SECTION 2 -->
-    <div id="section-2-welcome" class="hidden terminal-output">
-        <p class="prompt-line">
-            <span class="prompt">C:\GREETING></span>
-            <span class="prompt-content">Ciao <span id="display-nome-cognome-1" class="highlight"></span>, benvenuta alla tua pagina web dedicata.</span>
-        </p>
-        <br>
-        <p class="prompt-line blinking-cursor">
-            <span class="prompt">C:\CONTINUE></span>
-            <span class="prompt-content">Premi AVANTI per continuare...</span>
-        </p>
-        <button onclick="showSection(3)">AVANTI</button>
+    <form id="user-form">
+      <div class="prompt-line">
+        <span class="prompt">C:\USER\CLI_SETUP></span>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+      </div>
+
+      <div class="prompt-line">
+        <span class="prompt">C:\USER\CLI_SETUP></span>
+        <label for="cognome">Cognome:</label>
+        <input type="text" id="cognome" name="cognome" required>
+      </div>
+
+      <div class="prompt-line">
+        <span class="prompt">C:\USER\CLI_SETUP></span>
+        <label for="nascita">Data di Nascita:</label>
+        <input type="date" id="nascita" name="nascita" required>
+      </div>
+
+      <button type="submit">Invio Dati (ENTER)</button>
+    </form>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div id="section-2-welcome" class="hidden terminal-output">
+    <p class="prompt-line">
+      <span class="prompt">C:\GREETING></span>
+      <span class="prompt-content">Ciao <span id="display-nome-cognome-1" class="highlight"></span>, benvenuta alla tua pagina web dedicata.</span>
+    </p>
+    <br>
+    <p class="prompt-line blinking-cursor">
+      <span class="prompt">C:\CONTINUE></span>
+      <span class="prompt-content">Premi AVANTI per continuare...</span>
+    </p>
+    <button onclick="showSection(3)">AVANTI</button>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div id="section-3-message" class="hidden terminal-output">
+
+    <div id="step-3-1" class="narrative-step">
+      <p class="prompt-line">
+        <span class="prompt">C:\SYSTEM\ALERT></span>
+        <span class="prompt-content">**OGGI È IL TUO COMPLEANNO**, <span id="display-nome-2" class="highlight"></span>!</span>
+      </p>
     </div>
 
-    <!-- SECTION 3 -->
-    <div id="section-3-message" class="hidden terminal-output">
-
-        <div id="step-3-1" class="narrative-step">
-            <p class="prompt-line"><span class="prompt">C:\SYSTEM\ALERT></span><span class="prompt-content">**OGGI È IL TUO COMPLEANNO**, <span id="display-nome-2" class="highlight"></span>!</span></p>
-        </div>
-        <div id="step-3-2" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\GREETING></span><span class="prompt-content">Lo so che stai invecchiando, ma ricordati che sei una persona magnifica.</span></p>
-        </div>
-        <div id="step-3-3" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\MEMORIES></span><span class="prompt-content">Ripercorriamo ora qualche tappa della tua vita...</span></p>
-        </div>
-        <div id="step-3-4" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\ARCHIVE\2002></span><span class="prompt-content">Era il 22 Dicembre 2002, e nel mondo le tensioni geopolitiche si facevano sentire: terrorismo internazionale, crisi in Iraq, crisi della Corea del Nord, persino in Italia si discuteva su manovre economiche e internazionali.</span></p>
-        </div>
-        <div id="step-3-5" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\ARCHIVE\2002></span><span class="prompt-content">Ma nonostante tutto, il mondo intero rimase scosso dalla nascita di una bambina. Ma non una bambina qualunque: il suo nome è <span class="highlight">Alessandra</span> è lei è una supereroina.</span></p>
-        </div>
-        <div id="step-3-6" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\HERO_PROFILE></span><span class="prompt-content">Come ogni supereroe, o supereroina, lei era nata con dote speciali, e solo crescendo avrebbe capito quale sarebbe stato il suo destino.</span></p>
-        </div>
-
-        <div id="step-3-7" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\CHAPTER\01></span><span class="prompt-content chapter-title">CAPITOLO 1: DESTINY.</span></p>
-            <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Alessandra sin da bambina si distingue in innumerevoli discipline: canto, ballo, basket.... ma niente di tutto ciò le ha fatto capire quale fosse il suo vero scopo. Fino a quando....</span></p>
-        </div>
-
-        <div id="step-3-8" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\CHAPTER\02></span><span class="prompt-content chapter-title">CAPITOLO 2: LA RIVELAZIONE.</span></p>
-            <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Era un giorno come un altro in quel di Catanzaro Lido City, fino a quando la nostra eroina ha conosciuto quello che sarebbe stato il suo acerrimo nemico per la vita: il FILATORE OSCURO.</span></p>
-        </div>
-
-        <div id="step-3-9" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\CHAPTER\03></span><span class="prompt-content chapter-title">CAPITOLO 3: IL NEMICO.</span></p>
-            <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Lui chi era? O, per meglio dire, lui cos'era? Un cattivo mutante? Un malvagio stile Disney? O una conquistatore stile Marvel? Niente di tutto questo: lui era un LATTICINO. Ma non uno qualunque, uno di quelli brutti, che se soffri di una rara malattia (<span class="highlight">la provolite acuta</span>) non ti permette neanche di toccarlo con i guanti.</span></p>
-        </div>
-
-        <div id="step-3-10" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\CHAPTER\04></span><span class="prompt-content chapter-title">CAPITOLO 4: IL PIANO DI ATTACCO.</span></p>
-            <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">La nostra eroina ora doveva cosa fare, come poter sconfiggere il suo nemico. La sua mente è una fucina di idea, ma solo una era la scelta da fare: "vabbè basta non mangiarla, non toccarla, non annusarla, stare a distanza di almeno un metro". D'altronde non può farti male se non incontri il suo cammino. La nostra cara eroina però non aveva fatto bene i conti. Non aveva considerato che stare lontano dal suo nemico e dai suoi fedeli aiutanti (<span class="highlight">Baffo di Bufala ed Il Pungente</span>), l'avrebbe privata dall'assaporare l'inebriante gusto della pizza, dei panini, delle paste complesse.... insomma, verrebbe da dire: "che amarezza".</span></p>
-        </div>
-
-        <div id="step-3-11" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\CHAPTER\05></span><span class="prompt-content chapter-title">CAPITOLO 5: UN NEMICO DIVERSO.</span></p>
-            <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Il tempo passa, la nostra eroina cresce e dopo avere imparato a cibarsi di una cucina povera di contenuti, decise di voler affrontare nuove avventure. Forse è proprio questa voglia che l'ha portata ad affrontare un nuovo nemico, troppo potente, potentissimo, lo possiamo paragonare al bosso finale.... lo scontro è arrivato all'improvviso, la nostra eroina era impreparata, era in netta difficoltà, stava per mollare. Ma proprio come in un qualsiasi film di supereroi, la nostra Alessandra riprende le forze, si rialza e prende a calci il nemico: aveva dimostrato al mondo intero la sua vera forza, unica nel suo genere. Sconfitto un altro nemico, Alessandra, allo stremo delle forze, decide di abbandonare il mantello e di andare in pensione anticipata.</span></p>
-        </div>
-
-        <div id="step-3-12" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\CHAPTER\06></span><span class="prompt-content chapter-title">CAPITOLO 6: UNA VITA NORMALE.</span></p>
-            <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Fatta la scelta "dell'addio alle armi" la nostra protagonista inizia finalmente una vita normale. Va a scuola, esce con gli amici, frequenta la chiesa, fa finta di andare in palestra. Insomma, tutto quello che fanno le normali ragazze. Alessandra cresce, diventa grande e la sua vita diventa sempre più normale.</span></p>
-        </div>
-
-        <div id="step-3-13" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\CHAPTER\07></span><span class="prompt-content chapter-title">CAPITOLO 7: L'ARRIVO DEL "PERFETTO".</span></p>
-            <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Alessandra, godendosi la sua pensione, non si stava rendendo conto di quello che le stava per succedere. Incontra una persona, un ragazzo (il cui nome rimarrà sconosciuto per questione di privacy). Lui era proprio PERFETTO: alto, bello, simpatico, intelligente, una persona umile a cui non piaceva vantarsi (sappiamo che ne volete sapere di più, però non rubiamo la scena della nostra protagonista). I due si conoscono, si piacciono, escono insieme, e fanno coppia fissa.</span></p>
-        </div>
-
-        <div id="step-3-14" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\CHAPTER\08></span><span class="prompt-content chapter-title">CAPITOLO 8: IL FEDELE DESTRIERO.</span></p>
-            <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Passano i giorni, i mesi, gli anni e la coppia è sempre più forte, non c'erano punti deboli tra i due, si volevano sempre di più. Ma un giorno, dal nulla più profondo, appare un nuovo personaggio nelle loro vite: <span class="highlight">Coco pelo d'oro</span> (poi soprannominato Coco orecchie volanti). Grande, possente, di buon portamento... ecco, lui non lo è, ma ha tante alte qualità: è bello, buffo, simpatico, giocherellone e ama come nessuno fa; è anche un ottimo aiutante: arrivate a casa e vi volete mettere subito le ciabatte? Ci pensa lui a portarvele. Della sua presenza la coppia ne risentì; era palese che lui tenesse più al PERFETTO che all'eroina in pensione, sarà una questione di immagine. Ma i tre trovano subito un equilibrio e l'ex eroina vince anche la gelosia.</span></p>
-        </div>
-
-        <div id="step-3-15" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\CHAPTER\09></span><span class="prompt-content chapter-title">CAPITOLO 9: IL RITORNO AL MANTELLO.</span></p>
-            <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Per Alessandra, la vita, era tutta in discesa, facile come bere un bicchier d'acqua. Ma come in ogni buon film, proprio quando meno te lo aspetti, arriva il colpo di scena: un nuovo nemico era alle porte, e Alessandra si trova costretta ad indossare di nuovo il mantello. Un nuovo nemico dall'origine sconosciuta era alle porte; ma la nostra eroina non molla mai, spolvera il mantello e nota che le sta alla perfezione: era il momento di rimettersi in gioco e affrontare un altro nemico. Dopo il boss finale niente poteva farle paura, e infatti, come se fosse niente, basta qualche ora e anche il suo ennesimo nemico era sconfitto.</span></p>
-        </div>
-
-        <div id="step-3-16" class="narrative-step hidden">
-            <p class="prompt-line"><span class="prompt">C:\CHAPTER\10></span><span class="prompt-content chapter-title">CAPITOLO 10: PRONTA PER NUOVE VITE.</span></p>
-            <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Dopo un breve periodo di riposo la nostra eroina si rimette in gioco: non conserva il mantello, lo lava, lo stira e lo appende nell'armadio, pronto all'uso. Dopo anni di esperienza aveva capito che una doppia vita era possibile, una vita normale di giorno e di notte pronta a sconfiggere tutti i suoi nuovi nemici: il ritorno del Filatore Oscuro con i suoi fedeli aiutanti, l'Acidator, il Barone dell'Atrofia e tanti altri. La nostra storia per il momento termina qui, ma le avventure di Lady Ale non finiscono qui.</span></p>
-        </div>
-
-        <div id="step-3-17" class="narrative-step hidden">
-            <p class="prompt-line blinking-cursor">
-                <span class="prompt">C:\MISSION_END></span>
-                <span class="prompt-content">Narrazione completata. Premi AVANTI per accedere ai Contenuti Speciali.</span>
-            </p>
-        </div>
-
-        <div id="button-wrapper">
-            <button id="next-step-button" onclick="nextStep()">AVANTI</button>
-        </div>
+    <div id="step-3-2" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\GREETING></span><span class="prompt-content">Lo so che stai invecchiando, ma ricordati che sei una persona magnifica.</span></p>
     </div>
 
-    <!-- SECTION 4 -->
-    <div id="section-4-finale" class="hidden terminal-output">
-        <p class="prompt-line">
-            <span class="prompt">C:\SYSTEM\DASHBOARD></span>
-            <span class="prompt-content">Benvenuta nell'Area Contenuti Speciali, Lady Ale.</span>
-        </p>
-        <p class="prompt-line">
-            <span class="prompt">C:\MENU></span>
-            <span class="prompt-content">Seleziona una sezione per aprire la galleria dedicata.</span>
-        </p>
-        <br>
-
-        <div class="menu-item">
-            <span class="prompt">OPTION [1]></span>
-            <span class="prompt-content">
-                <button onclick="openGallery('foto')">FOTO (I Migliori Ricordi)</button>
-            </span>
-        </div>
-
-        <div class="menu-item">
-            <span class="prompt">OPTION [2]></span>
-            <span class="prompt-content">
-                <button onclick="openGallery('ricordi')">RICORDI (Tappe della Vita)</button>
-            </span>
-        </div>
-
-        <div class="menu-item">
-            <span class="prompt">OPTION [3]></span>
-            <span class="prompt-content">
-                <button onclick="openGallery('risate')">RISATE (Momenti Funny)</button>
-            </span>
-        </div>
-
-        <div class="menu-item">
-            <span class="prompt">OPTION [4]></span>
-            <span class="prompt-content">
-                <button onclick="openGallery('modella')">MODELLA (Fashion Shots)</button>
-            </span>
-        </div>
-
-        <br>
-        <p class="prompt-line blinking-cursor">
-            <span class="prompt">C:\USER\WAITING></span>
-            <span class="prompt-content">Clicca su una sezione per aprire la galleria.</span>
-        </p>
+    <div id="step-3-3" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\MEMORIES></span><span class="prompt-content">Ripercorriamo ora qualche tappa della tua vita...</span></p>
     </div>
+
+    <div id="step-3-4" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\ARCHIVE\2002></span><span class="prompt-content">Era il 22 Dicembre 2002, e nel mondo le tensioni geopolitiche si facevano sentire: terrorismo internazionale, crisi in Iraq, crisi della Corea del Nord, persino in Italia si discuteva su manovre economiche e internazionali.</span></p>
+    </div>
+
+    <div id="step-3-5" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\ARCHIVE\2002></span><span class="prompt-content">Ma nonostante tutto, il mondo intero rimase scosso dalla nascita di una bambina. Ma non una bambina qualunque: il suo nome è <span class="highlight">Alessandra</span> è lei è una supereroina.</span></p>
+    </div>
+
+    <div id="step-3-6" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\HERO_PROFILE></span><span class="prompt-content">Come ogni supereroe, o supereroina, lei era nata con dote speciali, e solo crescendo avrebbe capito quale sarebbe stato il suo destino.</span></p>
+    </div>
+
+    <div id="step-3-7" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\CHAPTER\01></span><span class="prompt-content chapter-title">CAPITOLO 1: DESTINY.</span></p>
+      <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Alessandra sin da bambina si distingue in innumerevoli discipline: canto, ballo, basket.... ma niente di tutto ciò le ha fatto capire quale fosse il suo vero scopo. Fino a quando....</span></p>
+    </div>
+
+    <div id="step-3-8" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\CHAPTER\02></span><span class="prompt-content chapter-title">CAPITOLO 2: LA RIVELAZIONE.</span></p>
+      <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Era un giorno come un altro in quel di Catanzaro Lido City, fino a quando la nostra eroina ha conosciuto quello che sarebbe stato il suo acerrimo nemico per la vita: il FILATORE OSCURO.</span></p>
+    </div>
+
+    <div id="step-3-9" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\CHAPTER\03></span><span class="prompt-content chapter-title">CAPITOLO 3: IL NEMICO.</span></p>
+      <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Lui chi era? O, per meglio dire, lui cos'era? Un cattivo mutante? Un malvagio stile Disney? O una conquistatore stile Marvel? Niente di tutto questo: lui era un LATTICINO. Ma non uno qualunque, uno di quelli brutti, che se soffri di una rara malattia (<span class="highlight">la provolite acuta</span>) non ti permette neanche di toccarlo con i guanti.</span></p>
+    </div>
+
+    <div id="step-3-10" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\CHAPTER\04></span><span class="prompt-content chapter-title">CAPITOLO 4: IL PIANO DI ATTACCO.</span></p>
+      <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">La nostra eroina ora doveva cosa fare, come poter sconfiggere il suo nemico. La sua mente è una fucina di idea, ma solo una era la scelta da fare: "vabbè basta non mangiarla, non toccarla, non annusarla, stare a distanza di almeno un metro". D'altronde non può farti male se non incontri il suo cammino...</span></p>
+    </div>
+
+    <div id="step-3-11" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\CHAPTER\05></span><span class="prompt-content chapter-title">CAPITOLO 5: UN NEMICO DIVERSO.</span></p>
+      <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Il tempo passa, la nostra eroina cresce... Sconfitto un altro nemico, Alessandra, allo stremo delle forze, decide di abbandonare il mantello e di andare in pensione anticipata.</span></p>
+    </div>
+
+    <div id="step-3-12" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\CHAPTER\06></span><span class="prompt-content chapter-title">CAPITOLO 6: UNA VITA NORMALE.</span></p>
+      <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Fatta la scelta "dell'addio alle armi" la nostra protagonista inizia finalmente una vita normale...</span></p>
+    </div>
+
+    <div id="step-3-13" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\CHAPTER\07></span><span class="prompt-content chapter-title">CAPITOLO 7: L'ARRIVO DEL "PERFETTO".</span></p>
+      <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">Alessandra... I due si conoscono, si piacciono, escono insieme, e fanno coppia fissa.</span></p>
+    </div>
+
+    <div id="step-3-14" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\CHAPTER\08></span><span class="prompt-content chapter-title">CAPITOLO 8: IL FEDELE DESTRIERO.</span></p>
+      <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">... appare un nuovo personaggio nelle loro vite: <span class="highlight">Coco pelo d'oro</span>...</span></p>
+    </div>
+
+    <div id="step-3-15" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\CHAPTER\09></span><span class="prompt-content chapter-title">CAPITOLO 9: IL RITORNO AL MANTELLO.</span></p>
+      <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">... la nostra eroina non molla mai ...</span></p>
+    </div>
+
+    <div id="step-3-16" class="narrative-step hidden">
+      <p class="prompt-line"><span class="prompt">C:\CHAPTER\10></span><span class="prompt-content chapter-title">CAPITOLO 10: PRONTA PER NUOVE VITE.</span></p>
+      <p class="prompt-line"><span class="prompt">C:\NARRATIVE></span><span class="prompt-content">... le avventure di Lady Ale non finiscono qui.</span></p>
+    </div>
+
+    <div id="step-3-17" class="narrative-step hidden">
+      <p class="prompt-line blinking-cursor">
+        <span class="prompt">C:\MISSION_END></span>
+        <span class="prompt-content">Narrazione completata. Premi AVANTI per accedere ai Contenuti Speciali.</span>
+      </p>
+    </div>
+
+    <div id="button-wrapper">
+      <button id="next-step-button" onclick="nextStep()">AVANTI</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div id="section-4-finale" class="hidden terminal-output">
+    <p class="prompt-line">
+      <span class="prompt">C:\SYSTEM\DASHBOARD></span>
+      <span class="prompt-content">Benvenuta nell'Area Contenuti Speciali, Lady Ale.</span>
+    </p>
+    <p class="prompt-line">
+      <span class="prompt">C:\MENU></span>
+      <span class="prompt-content">Seleziona una sezione per aprire la galleria dedicata.</span>
+    </p>
+    <br>
+
+    <div class="menu-item">
+      <span class="prompt">OPTION [1]></span>
+      <span class="prompt-content">
+        <button onclick="openGallery('foto')">FOTO (I Migliori Ricordi)</button>
+      </span>
+    </div>
+
+    <div class="menu-item">
+      <span class="prompt">OPTION [2]></span>
+      <span class="prompt-content">
+        <button onclick="openGallery('ricordi')">RICORDI (Tappe della Vita)</button>
+      </span>
+    </div>
+
+    <div class="menu-item">
+      <span class="prompt">OPTION [3]></span>
+      <span class="prompt-content">
+        <button onclick="openGallery('risate')">RISATE (Momenti Funny)</button>
+      </span>
+    </div>
+
+    <div class="menu-item">
+      <span class="prompt">OPTION [4]></span>
+      <span class="prompt-content">
+        <button onclick="openGallery('modella')">MODELLA (Fashion Shots)</button>
+      </span>
+    </div>
+
+    <br>
+    <p class="prompt-line blinking-cursor">
+      <span class="prompt">C:\USER\WAITING></span>
+      <span class="prompt-content">Clicca su una sezione per aprire la galleria.</span>
+    </p>
+  </div>
 
 </div>
 
 <script>
-window.onload = function() {
-    let userData = {};
-    let currentNarrativeStep = 1;
-    const totalNarrativeSteps = 16;
+window.onload = function () {
+  let userData = {};
+  let currentNarrativeStep = 1;
+  const totalNarrativeSteps = 16;
 
-    function scrollToBottom() {
-        const container = document.getElementById('terminal-container');
-        container.scrollTop = container.scrollHeight;
+  function scrollToBottom() {
+    const container = document.getElementById('terminal-container');
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function hideAllNarrativeSteps() {
+    for (let i = 1; i <= totalNarrativeSteps + 1; i++) {
+      const stepElement = document.getElementById('step-3-' + i);
+      if (stepElement) stepElement.classList.add('hidden');
+    }
+  }
+
+  window.showSection = function (sectionNumber) {
+    document.getElementById('section-1-input').classList.add('hidden');
+    document.getElementById('section-2-welcome').classList.add('hidden');
+    document.getElementById('section-3-message').classList.add('hidden');
+    document.getElementById('section-4-finale').classList.add('hidden');
+
+    let targetId = 'section-1-input';
+    if (sectionNumber === 2) targetId = 'section-2-welcome';
+    if (sectionNumber === 3) targetId = 'section-3-message';
+    if (sectionNumber === 4) targetId = 'section-4-finale';
+
+    document.getElementById(targetId).classList.remove('hidden');
+
+    if (sectionNumber === 2) {
+      const fullName = userData.nome + ' ' + userData.cognome;
+      document.getElementById('display-nome-cognome-1').textContent = fullName;
     }
 
-    function hideAllNarrativeSteps() {
-        for (let i = 1; i <= totalNarrativeSteps + 1; i++) {
-            const stepElement = document.getElementById('step-3-' + i);
-            if (stepElement) stepElement.classList.add('hidden');
-        }
+    if (sectionNumber === 3) {
+      document.getElementById('display-nome-2').textContent = userData.nome;
+
+      hideAllNarrativeSteps();
+      currentNarrativeStep = 1;
+      document.getElementById('step-3-1').classList.remove('hidden');
+      document.getElementById('next-step-button').classList.remove('hidden');
+
+      document.getElementById('terminal-container').scrollTop = 0;
     }
 
-    window.showSection = function(sectionNumber) {
-        document.getElementById('section-1-input').classList.add('hidden');
-        document.getElementById('section-2-welcome').classList.add('hidden');
-        document.getElementById('section-3-message').classList.add('hidden');
-        document.getElementById('section-4-finale').classList.add('hidden');
+    if (sectionNumber === 4) {
+      document.getElementById('next-step-button').classList.add('hidden');
+      scrollToBottom();
+    }
+  };
 
-        let targetId;
-        if (sectionNumber === 1) targetId = 'section-1-input';
-        else if (sectionNumber === 2) targetId = 'section-2-welcome';
-        else if (sectionNumber === 3) targetId = 'section-3-message';
-        else if (sectionNumber === 4) targetId = 'section-4-finale';
+  window.nextStep = function () {
+    document.getElementById('step-3-' + currentNarrativeStep).classList.add('hidden');
+    currentNarrativeStep++;
 
-        document.getElementById(targetId).classList.remove('hidden');
+    if (currentNarrativeStep <= totalNarrativeSteps) {
+      const nextStepElement = document.getElementById('step-3-' + currentNarrativeStep);
+      if (nextStepElement) {
+        nextStepElement.classList.remove('hidden');
+        scrollToBottom();
+      }
+    } else if (currentNarrativeStep === totalNarrativeSteps + 1) {
+      document.getElementById('step-3-17').classList.remove('hidden');
+      scrollToBottom();
+    } else {
+      showSection(4);
+    }
+  };
 
-        if (sectionNumber === 2) {
-            const fullName = userData.nome + ' ' + userData.cognome;
-            document.getElementById('display-nome-cognome-1').textContent = fullName;
-        }
+  // APRE LA GALLERIA IN UNA NUOVA SCHEDA
+  window.openGallery = function (type) {
+    window.open(`gallery/${type}.html`, "_blank");
+    // Se la vuoi nella stessa scheda, usa:
+    // window.location.href = `gallery/${type}.html`;
+  };
 
-        if (sectionNumber === 3) {
-            document.getElementById('display-nome-2').textContent = userData.nome;
-
-            hideAllNarrativeSteps();
-
-            currentNarrativeStep = 1;
-            document.getElementById('step-3-1').classList.remove('hidden');
-            document.getElementById('next-step-button').classList.remove('hidden');
-
-            document.getElementById('terminal-container').scrollTop = 0;
-        }
-
-        if (sectionNumber === 4) {
-            document.getElementById('next-step-button').classList.add('hidden');
-            scrollToBottom();
-        }
-    };
-
-    window.nextStep = function() {
-        document.getElementById('step-3-' + currentNarrativeStep).classList.add('hidden');
-        currentNarrativeStep++;
-
-        if (currentNarrativeStep <= totalNarrativeSteps) {
-            const nextStepElement = document.getElementById('step-3-' + currentNarrativeStep);
-            if (nextStepElement) {
-                nextStepElement.classList.remove('hidden');
-                scrollToBottom();
-            }
-        } else if (currentNarrativeStep === totalNarrativeSteps + 1) {
-            document.getElementById('step-3-17').classList.remove('hidden');
-            scrollToBottom();
-        } else {
-            showSection(4);
-        }
-    };
-
-    window.openGallery = function(type) {
-        window.location.href = `gallery/${type}.html`;
-    };
-
-    document.getElementById('user-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        userData.nome = document.getElementById('nome').value;
-        userData.cognome = document.getElementById('cognome').value;
-        userData.nascita = document.getElementById('nascita').value;
-        showSection(2);
-    });
+  document.getElementById('user-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    userData.nome = document.getElementById('nome').value;
+    userData.cognome = document.getElementById('cognome').value;
+    userData.nascita = document.getElementById('nascita').value;
+    showSection(2);
+  });
 };
 </script>
 </body>
